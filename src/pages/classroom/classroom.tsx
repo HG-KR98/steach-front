@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import WebrtcTeacher from "./WebrtcTeacher";
 import WebrtcStudent from "./WebrtcStudent";
-import { useParams } from 'react-router-dom';
-import { startLectureSlice } from '../../store/LectureSlice'
+import { useParams } from "react-router-dom";
+import { startLectureSlice } from "../../store/LectureSlice";
 import { AppDispatch } from "../../store";
 import { useDispatch } from "react-redux";
-import cam from "../../assets/RTC/cam.png"
-import nocam from "../../assets/RTC/no_cam.png"
+import cam from "../../assets/RTC/cam.png";
+import nocam from "../../assets/RTC/no_cam.png";
 
 const Classroom = () => {
   const [page, setPage] = useState("gate");
@@ -42,6 +42,7 @@ const Classroom = () => {
     setupLocalStream();
   }, []);
   const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     const localStorageUserData = localStorage.getItem("auth");
@@ -55,9 +56,9 @@ const Classroom = () => {
     }
   }, [lecture_id]);
 
-  useEffect(() => {
-    
-  })
+  useEffect(() => {});
+
+  useEffect(() => {});
 
   const handleEnterClick = () => {
     if (role === "") {
@@ -65,14 +66,14 @@ const Classroom = () => {
       return;
     } else if (role === "TEACHER") {
       if (lecture_id) {
-        localStorage.removeItem('prevRankData');
+        localStorage.removeItem("prevRankData");
         setPage("WebrtcTeacher");
-        dispatch(startLectureSlice(lecture_id))
+        dispatch(startLectureSlice(lecture_id));
         setHidden(1);
         setIsVisible(false);
       }
     } else if (role === "STUDENT") {
-      localStorage.removeItem('prevRankData');
+      localStorage.removeItem("prevRankData");
       setPage("WebrtcStudent");
       setHidden(1);
       setIsVisible(false);
@@ -109,9 +110,9 @@ const Classroom = () => {
               title="Toggle Video"
             >
               {videoEnabled ? (
-                  <img src={`${cam}`} className="w-8 h-8" />
+                <img src={`${cam}`} className="w-8 h-8" />
               ) : (
-                  <img src={`${nocam}`} className="w-8 h-8"/>
+                <img src={`${nocam}`} className="w-8 h-8" />
               )}
             </button>
           </div>

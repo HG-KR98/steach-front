@@ -268,6 +268,7 @@ const WebrtcStudent: React.FC<WebrtcProps> = ({
         if (blob !== null) {
           const formData = new FormData();
           // saveAs(blob, "res.png");
+          // saveAs(blob, "res.png");
           formData.append("file", blob, "focus.png");
 
 					// Upload the resized image
@@ -536,6 +537,9 @@ const WebrtcStudent: React.FC<WebrtcProps> = ({
       if (!videoTrack.enabled) {
         console.log("Stop DD");
         stopDrowsinessDetection();
+      } else {
+        console.log("Start DD");
+        startDrowsinessDetection();
       } else {
         console.log("Start DD");
         startDrowsinessDetection();

@@ -23,6 +23,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./WebrtcStudent.module.css";
 import DetailQuiz from "../../components/quiz/QuizBlock.tsx";
 import { finalLectureSlice, reportLectureSlice } from '../../store/LectureSlice.tsx';
+import { finalLectureSlice, reportLectureSlice } from '../../store/LectureSlice.tsx';
 import { LectureReport } from '../../interface/Curriculainterface.tsx';
 import { report } from 'process';
 import lecture_close from "../../assets/RTC/lecture_close.png" 
@@ -97,10 +98,13 @@ interface ModalProps2 {
 }
 
 
+
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm }) => {
+  if (!isOpen) return null;
   if (!isOpen) return null;
 	
   return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-bold mb-4">강의 종료</h2>
@@ -139,6 +143,7 @@ const Modal2: React.FC<ModalProps2> = ({ isOpen, report, lectureid, onConfirm })
 	
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[400px]">
 				<div className="grid grid-cols-2 grid-rows-2 gap-2">
 				{report?.student_info_by_lecture_dto_list.map((user, index) => (
@@ -159,6 +164,7 @@ const Modal2: React.FC<ModalProps2> = ({ isOpen, report, lectureid, onConfirm })
               <p>퀴즈 정답 평균 : {report?.average_correct_number}개</p>
 				</div>
         <button 
+          onClick={onConfirm} 
           onClick={onConfirm} 
           className="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
         >
