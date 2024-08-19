@@ -42,7 +42,6 @@ const Classroom = () => {
     setupLocalStream();
   }, []);
   const dispatch: AppDispatch = useDispatch();
-  const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
     const localStorageUserData = localStorage.getItem("auth");
@@ -55,8 +54,6 @@ const Classroom = () => {
       setUserEmail(userData.nickname);
     }
   }, [lecture_id]);
-
-  useEffect(() => {});
 
   useEffect(() => {});
 

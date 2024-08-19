@@ -73,53 +73,34 @@ const RankingsList: React.FC<RankingsProps> = ({ data }) => {
 
     let repeatCount1 = 0; // 반복 횟수를 추적하는 변수
     const maxRepeats1 = 10; // 최대 반복 횟수 설정
-    
+
     const interval = setInterval(() => {
       setAnimatedScores((prevScores) =>
         prevScores.map((score, index) => {
           if (index >= data.current.length) {
             return score; // 범위를 넘은 경우 기존 점수를 반환
           }
-    
-    
+
           const targetScore = data.current[index].score;
           const difference = targetScore - score;
           let step = Math.ceil(difference / totalSteps); // 각 프레임에서 변화할 양
-    
-    
+
           // step이 너무 작아서 갱신이 안되는 경우를 방지하기 위해 최소값을 설정
           if (Math.abs(step) < 1) {
             step = difference >= 0 ? 1 : -1;
           }
-    
-    
+
           // 마지막 단계에서 정확하게 목표 점수로 맞추기 위한 조건
-          if (Math.abs(difference) <= Math.abs(step)) {
           if (Math.abs(difference) <= Math.abs(step)) {
             return targetScore; // 마지막 단계에서는 정확하게 목표 점수로 맞춤
           }
-    
-    
+
           return score + step;
         })
       );
-    
+
       repeatCount1 += 1; // 반복 횟수 증가
-    
-      if (repeatCount1 >= maxRepeats1) {
-        setAnimatedScores((prevScores) =>
-          prevScores.map((score, index) => {
-            if (index >= data.current.length) {
-              return score;
-            }
-            return data.current[index].score; // 마지막 단계에서 모든 값을 targetScore로 설정
-          })
-        );
-        clearInterval(interval); // 최대 반복 횟수에 도달하면 반복 중단
-      }
-    
-      repeatCount1 += 1; // 반복 횟수 증가
-    
+
       if (repeatCount1 >= maxRepeats1) {
         setAnimatedScores((prevScores) =>
           prevScores.map((score, index) => {
@@ -132,7 +113,6 @@ const RankingsList: React.FC<RankingsProps> = ({ data }) => {
         clearInterval(interval); // 최대 반복 횟수에 도달하면 반복 중단
       }
     }, intervalTime); // 프레임 간격 50ms
-    
 
     let repeatCount2 = 0; // 반복 횟수를 추적하는 변수
     const maxRepeats2 = 10; // 최대 반복 횟수 설정
@@ -155,7 +135,6 @@ const RankingsList: React.FC<RankingsProps> = ({ data }) => {
 
           // 마지막 단계에서 정확하게 목표 점수로 맞추기 위한 조건
           if (Math.abs(difference) <= Math.abs(step)) {
-          if (Math.abs(difference) <= Math.abs(step)) {
             return targetRank; // 마지막 단계에서는 정확하게 목표 점수로 맞춤
           }
 
@@ -164,21 +143,7 @@ const RankingsList: React.FC<RankingsProps> = ({ data }) => {
       );
 
       repeatCount2 += 1; // 반복 횟수 증가
-    
-      if (repeatCount2 >= maxRepeats2) {
-        setAnimatedScores((prevScores) =>
-          prevScores.map((score, index) => {
-            if (index >= data.current.length) {
-              return score;
-            }
-            return data.current[index].score; // 마지막 단계에서 모든 값을 targetScore로 설정
-          })
-        );
-        clearInterval(interval2); // 최대 반복 횟수에 도달하면 반복 중단
-      }
 
-      repeatCount2 += 1; // 반복 횟수 증가
-    
       if (repeatCount2 >= maxRepeats2) {
         setAnimatedScores((prevScores) =>
           prevScores.map((score, index) => {
@@ -206,7 +171,15 @@ const RankingsList: React.FC<RankingsProps> = ({ data }) => {
   }, [isTransitioning, data]);
 
   return (
-    <div style={{ width: "70%", height: "136px", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}>
+    <div
+      style={{
+        width: "70%",
+        height: "136px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+      }}
+    >
       <ul style={{ listStyle: "none", padding: 0, margin: 0, height: "100%" }}>
         {displayedList.map((item, index) => {
           const currentRank = data.current.find(
@@ -218,27 +191,39 @@ const RankingsList: React.FC<RankingsProps> = ({ data }) => {
           const prevRank = item.rank;
 
           // 애니메이션 효과로 부드럽게 사라지게 함
-          const shouldDisappear = isTransitioning2 && (currentRank === undefined || currentScore === undefined);
+          const shouldDisappear =
+            isTransitioning2 &&
+            (currentRank === undefined || currentScore === undefined);
 
           return (
             <li
               key={item.name}
-              className={`mb-1 py-0 px-5 shadow-md rounded-lg border border-gray-200 transition-opacity duration-500 ${currentRank === 1 ? "bg-blue-300" : "bg-white"}`}
+              className={`mb-1 py-0 px-5 shadow-md rounded-lg border border-gray-200 transition-opacity duration-500 ${
+                currentRank === 1 ? "bg-blue-300" : "bg-white"
+              }`}
               style={{
                 opacity: shouldDisappear ? 0 : 1,
                 transition: "opacity 0.5s ease, transform 0.5s ease",
-                transform: isTransitioning2 && item.rank !== currentRank && currentRank !== undefined
-                  ? `translateY(${34 * (currentRank - prevRank)}px)`
-                  : "translateY(0)",
+                transform:
+                  isTransitioning2 &&
+                  item.rank !== currentRank &&
+                  currentRank !== undefined
+                    ? `translateY(${34 * (currentRank - prevRank)}px)`
+                    : "translateY(0)",
                 color: "black",
               }}
             >
               <div className="flex items-center justify-between w-full">
                 <div className="text-lg font-semibold">
-                  {isTransitioning2 ? currentRank : Math.round(animatedRanks[index])}. {item.name}
+                  {isTransitioning2
+                    ? currentRank
+                    : Math.round(animatedRanks[index])}
+                  . {item.name}
                 </div>
                 <div className="text-sm font-semibold text-black text-right">
-                  {isTransitioning2 ? currentScore : Math.round(animatedScores[index])}
+                  {isTransitioning2
+                    ? currentScore
+                    : Math.round(animatedScores[index])}
                 </div>
               </div>
             </li>
