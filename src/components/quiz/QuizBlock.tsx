@@ -397,24 +397,44 @@ const DetailQuiz: React.FC<DetailQuizProps> = ({
           </div>
         )}
 
-        {/* 퀴즈 질문 블록 */}
-        <div
-          id="question"
-          className={`absolute inset-0 top-[50px] text-2xl transition-transform duration-500 ease-in-out flex justify-center items-end pb-2 ${
-            showQuestion ? "opacity-100" : "opacity-0"
-          } transform ${
-            showStatistic
-              ? "translate-y-[-145px]"
-              : showChoices
-              ? "translate-y-[-45px]"
-              : "translate-y-0"
-          }`}
+      {/* 퀴즈 질문 블록 */}
+      <div
+        id="question"
+        className={`absolute inset-0 top-[50px] text-2xl transition-transform duration-500 ease-in-out flex justify-center items-end pb-2 ${
+          showQuestion ? "opacity-100" : "opacity-0"
+        } transform ${
+          showStatistic
+            ? "translate-y-[-145px]"
+            : showChoices
+            ? "translate-y-[-45px]"
+            : "translate-y-0"
+        }`}
+      >
+        <p
+          style={{
+            backgroundColor: "",
+            padding: 10,
+            width: "100%",
+            fontSize: initialQuizData.question.length >= 100 
+              ? "14px" 
+              : initialQuizData.question.length >= 50 
+              ? "18px" 
+              : "24px",  // Default larger size for shorter questions
+            lineHeight: initialQuizData.question.length >= 50 
+              ? "1.2" 
+              : initialQuizData.question.length >= 20 
+              ? "1.4" 
+              : "1.6",  // Adjust line spacing based on length
+            textAlign: "center"  // Ensure text is centered
+          }}
         >
-          <p style={{ backgroundColor: "", padding: 10, width: "100%" }}>
-            {initialQuizData.question}
-          </p>
-        </div>
+          {initialQuizData.question}
+        </p>
       </div>
+
+
+      </div>
+
       <div
         id="answer"
         style={{

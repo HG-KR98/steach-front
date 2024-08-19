@@ -37,6 +37,8 @@ const MyLecturePreference: React.FC = () => {
   const fetchSecondData = async () => {
     const response = await fetchStudentRadarChartApi();
 
+    console.log("hihi")
+
     if (response) {
       setRadarChartData({
         Korean: response.Korean,
@@ -47,8 +49,8 @@ const MyLecturePreference: React.FC = () => {
         Engineering: response.Engineering,
         Foreign_language: response.Foreign_language,
       });
-    } else {
       setIsRadarChartData(true);
+    } else {
     }
   };
 

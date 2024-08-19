@@ -203,11 +203,11 @@ const LectureUpdate: React.FC = () => {
     const response = await dispatch(
       petchCurriculumDetails({ newLectureData: formDataToSend, id })
     );
-    navigate(-1);
     if (response.meta.requestStatus === "fulfilled") {
       toast.success("수정되었습니다!", {
         position: "top-right",
       });
+      navigate(-1);
     } else {
       toast.error("에러 발생!", {
         position: "top-right",
@@ -281,6 +281,7 @@ const LectureUpdate: React.FC = () => {
                 <option value="MATH">MATH</option>
                 <option value="FOREIGN_LANGUAGE">FOREIGN_LANGUAGE</option>
                 <option value="SCIENCE">SCIENCE</option>
+                <option value="SOCIAL">SOCIAL</option>
                 <option value="ENGINEERING">ENGINEERING</option>
                 <option value="ARTS_AND_PHYSICAL">ARTS_AND_PHYSICAL</option>
                 <option value="EDUCATION">EDUCATION</option>

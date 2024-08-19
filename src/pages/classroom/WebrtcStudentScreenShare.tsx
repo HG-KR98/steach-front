@@ -289,7 +289,7 @@ const WebrtcStudentScreenShare: React.FC<WebrtcProps> = ({ roomId, userEmail, us
 					width: 600,
 					height: 338,
 					margin: 5,
-					backgroundColor: 'lightskyblue',
+					backgroundColor: '#374151',
 				}}
 				muted
 				ref={localScreenShareRef}

@@ -30,14 +30,9 @@ import cam from "../../assets/RTC/cam.png"
 import nocam from "../../assets/RTC/no_cam.png" 
 import mic from "../../assets/RTC/mic.png" 
 import nomic from "../../assets/RTC/no_mic.png" 
-import screenShare from "../../assets/RTC/screen.png"
-import noScreenShare from "../../assets/RTC/no_screen.png"
-import quiz from "../../assets/RTC/quiz.png"
-import noQuiz from "../../assets/RTC/no_quiz.png"
-import chat from "../../assets/RTC/chat.png"
-import noChat from "../../assets/RTC/no_chat.png"
-import studentsScreenShare from "../../assets/RTC/students_screen.png"
-import noStudentsScreenShare from "../../assets/RTC/no_students_screen.png"
+import screenShare from "../../assets/RTC/screen.png" 
+import quiz from "../../assets/RTC/quiz.png" 
+import chat from "../../assets/RTC/chat.png" 
 // import DetailQuiz from "./QuizBlock";
 // import { QuizResponseDTO } from "./QuizListComponent";
 
@@ -54,27 +49,26 @@ const SOCKET_SERVER_URL = `${protocol}//${window.location.hostname}:${
   }`;
 
 const gridStyles = (userCount: number) => {
-  // switch (userCount) {
-    // case 1:
-    //   return 'grid-cols-2 grid-rows-1';
-    // case 2:
-    //   return 'grid-cols-2 grid-rows-1';
-    // case 3:
-    //   return 'grid-cols-4 grid-rows-1';
-    // case 4:
-    //   return 'grid-cols-4 grid-rows-1';
-    // case 5:
-    //   return 'grid-cols-4 grid-rows-2';
-    // case 6:
-    //   return 'grid-cols-4 grid-rows-2';
-    // case 7:
-    //   return 'grid-cols-4 grid-rows-2';
-    // case 8:
-    //   return 'grid-cols-4 grid-rows-2';
-    // default:
-    //   return 'grid-cols-1 grid-rows-1';
-  // }
-  return 'grid-cols-2 grid-rows-3';
+  switch (userCount) {
+    case 1:
+      return 'grid-cols-2 grid-rows-1';
+    case 2:
+      return 'grid-cols-2 grid-rows-1';
+    case 3:
+      return 'grid-cols-4 grid-rows-1';
+    case 4:
+      return 'grid-cols-4 grid-rows-1';
+    case 5:
+      return 'grid-cols-4 grid-rows-2';
+    case 6:
+      return 'grid-cols-4 grid-rows-2';
+    case 7:
+      return 'grid-cols-4 grid-rows-2';
+    case 8:
+      return 'grid-cols-4 grid-rows-2';
+    default:
+      return 'grid-cols-1 grid-rows-1';
+  }
 };
 
 interface WebrtcProps {
@@ -93,7 +87,6 @@ interface ModalProps2 {
   isOpen: boolean;
   report: LectureReport | null
   lectureid: string | undefined
-  onConfirm: () => void;
 }
 
 
@@ -124,17 +117,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onConfirm }) => {
   );
 };
 
-const Modal2: React.FC<ModalProps2> = ({ isOpen, report, lectureid, onConfirm }) => {
+const Modal2: React.FC<ModalProps2> = ({ isOpen, report, lectureid }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  // const onConfirm = async () => {
-  //   if (lectureid) {
-  //     await dispatch(finalLectureSlice(lectureid))
-  //     navigate('/home')
-  //     window.location.replace(window.location.href);
-      
-  //   }
-  // }
+  const onConfirm = async () => {
+    if (lectureid) {
+      await dispatch(finalLectureSlice(lectureid))
+      navigate('/home')
+      window.location.replace(window.location.href);
+    }
+  }
 	if (!isOpen) return null;
 	
   return (
@@ -201,7 +193,7 @@ const WebrtcTeacher: React.FC<WebrtcProps> = ({
 // --------------------------------------------------------------
 	const dispatch = useDispatch<AppDispatch>();
 	const { lecture_id } = useParams();
-  const navigate = useNavigate();
+	
   // 화면 출력 여부
   const [isOnVideo, setIsOnVideo] = useState(false);
 
@@ -249,16 +241,12 @@ const WebrtcTeacher: React.FC<WebrtcProps> = ({
     setIsModal2Open(false);
   };
 
-	const confirmAction = async () => {
+	const confirmAction = () => {
 		if (socketRef.current) {
 			socketRef.current.emit('lecture_end');
-    }
-    if (lecture_id) {
-
-      await dispatch(finalLectureSlice(lecture_id))
-      navigate('/home')
-      window.location.replace(window.location.href);
-    }
+		}
+		openModal2();
+    closeModal();
   };
 	
 
@@ -279,8 +267,6 @@ const handleMouseEnter = () => {
       clearTimeout(hideControlsTimeout.current);
     }
   };
-
-  document.body.onmousemove = handleMouseMove;
 
   const showControlsTemporarily = () => {
     setShowControls(true);
@@ -507,7 +493,7 @@ const handleMouseEnter = () => {
       });
     }
   };
-  
+
   const toggleStudentScreenShare = (
     studentId: string,
     userEmail: string,
@@ -819,19 +805,19 @@ const handleMouseEnter = () => {
 	return (
 		<>
 		<div className={`${styles.videoContainer} ${isFullscreen ? 'flex flex-wrap items-center justify-center w-full h-screen bg-discordChatBg top-0 left-0 z-50 gap-4' : 'flex flex-wrap items-center justify-center w-full h-full bg-discordChatBg gap-4'}`}
-			// onMouseEnter={handleMouseEnter}
-			// onMouseMove={handleMouseMove}
-			// onMouseLeave={handleMouseLeave}
+			onMouseEnter={handleMouseEnter}
+			onMouseMove={handleMouseMove}
+			onMouseLeave={handleMouseLeave}
 		>
       <div>
       <Modal isOpen={isModalOpen} onClose={closeModal} onConfirm={openModal2} />
-          <Modal2 isOpen={isModal2Open} report={report} lectureid={lecture_id} onConfirm={confirmAction} />
+          <Modal2 isOpen={isModal2Open} report={report} lectureid={lecture_id} />
 			</div>
 			<div className={`${isFullscreen ? 'fixed top-10 left-0 w-full h-full z-50 bg-black grid grid-cols-12 gap-4' : 'grid grid-cols-12 gap-4 w-full'} ${isChatOpen || isItemsOpen || isQuizOpen ? 'mr-[300px] transition-margin-right duration-500 ease-in-out' : 'transition-margin-right duration-500 ease-in-out'} flex flex-wrap items-center justify-center bg-discordChatBg`}>
 				<div className="col-span-6 flex items-center justify-center">
 					<div style={{ display: 'inline-block' }}>
               <div style={{ position: 'relative', width: 600, height: 338 }} className={`${styles.videoContainer}`}>
-                <p className="font-bold text-white">{userEmail} 선생님</p>
+                <p>${userEmail} 선생님</p>
 							<video
                 className={`w-full h-full bg-black rounded-2xl ${isFullscreen ? "lg:w-full lg:h-full" : ""}`}
 								onClick={toggleFullscreen}
@@ -842,48 +828,48 @@ const handleMouseEnter = () => {
 							/>
 						</div>
 						{showControls && (
-							<div className={`fixed bottom-0 left-0 right-0 flex justify-around items-center p-3 rounded-lg ${showControls ? 'translate-y-0 opacity-100 transition-transform transition-opacity duration-500 ease-in-out' : 'translate-y-full opacity-0 transition-transform transition-opacity duration-500 ease-in-out'} bg-opacity-5 bg-gradient-to-t from-[#111111] to-transparent z-10`}>
-								<div className='grid grid-cols-12 ' style={{marginBottom: '10px', marginTop: '12px'}}>
+							<div className={`fixed bottom-0 left-0 right-0 flex justify-around items-center p-3 rounded-lg ${showControls ? 'translate-y-0 opacity-100 transition-transform transition-opacity duration-500 ease-in-out' : 'translate-y-full opacity-0 transition-transform transition-opacity duration-500 ease-in-out'} bg-opacity-80 bg-gradient-to-t from-black to-transparent z-10`}>
+								<div className='grid grid-cols-12 '>
 								<div className='col-span-2'></div>
 									<div className='col-span-8 flex items-center justify-center'>
-
-                                      <button onClick={toggleVideo} className="flex items-center justify-center text-white rounded-full border-0 border-white w-14 h-14 mx-3 bg-[#262626]">
-                                        {isVideoEnabled ? <img src={`${cam}`} className="w-8 h-8" /> : <img src={`${nocam}`} className="w-8 h-8" />}
-                                      </button>
-                                      <button onClick={toggleAudio} className="flex items-center justify-center text-white rounded-full border-0 border-white w-14 h-14 mx-3 bg-[#262626]">
-                                          {isAudioEnabled ? <img src={`${mic}`} className="w-8 h-8" /> : <img src={`${nomic}`} className="w-8 h-8" />}
-                                      </button>
-                                      <button onClick={toggleScreenShare} className="flex items-center justify-center text-white rounded-full border-0 border-white w-14 h-14 mx-3 bg-[#262626]">
-                                          {isScreenShareEnabled ? <img src={`${screenShare}`} className="w-8 h-8" /> : <img src={`${noScreenShare}`} className="w-8 h-8" />}
-                                      </button>
-                                      <button
-                                          onClick={toggleChat}
-                                          className="flex items-center justify-center text-white rounded-full border-0 border-white w-14 h-14 mx-3 bg-[#262626]"
-                                          >
-                                          {isChatOpen ? <img src={`${chat}`} className="w-8 h-8" /> : <img src={`${noChat}`} className="w-8 h-8" />}
-                                      </button>
-                                      <button
-                                          onClick={toggleItems}
-                                          className="flex items-center justify-center text-white rounded-full border-0 border-white w-14 h-14 mx-3 bg-[#262626]"
-                                          >
-                                        {isItemsOpen ? <img src={`${studentsScreenShare}`} className="w-8 h-8"/> : <img src={`${noStudentsScreenShare}`} className="w-8 h-8"/>}
-                                      </button>
-                                      <button
-                                          onClick={toggleQuiz}
-                                          className="flex items-center justify-center text-white rounded-full border-0 border-white w-14 h-14 mx-3 bg-[#262626]"
-                                      >
-                                        {isQuizOpen ? <img src={`${quiz}`} className="w-8 h-8"/> : <img src={`${noQuiz}`} className="w-8 h-8"/>}
-                                      </button>
-                                      <button
-                                          onClick={openModal}
-                                          className="flex items-center justify-center text-white rounded-full border-0 border-white w-14 h-14 mx-3 bg-red-500"
-                                      >
-                                        <img src={`${lecture_close}`} className="w-8 h-8" />
-                                      </button>
-                                    </div>
-                                  <div className='col-span-2'></div>
-                                </div>
-                          </div>
+										
+								<button onClick={toggleVideo} className="flex items-center justify-center text-white rounded-full border-2 border-black w-12 h-12 bg-black mx-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+                  {isVideoEnabled ? <img src={`${cam}`} className="w-8 h-8" /> : <img src={`${nocam}`} className="w-8 h-8" />}
+								</button>
+								<button onClick={toggleAudio} className="flex items-center justify-center text-white rounded-full border-2 border-black w-12 h-12 bg-black mx-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+									{isAudioEnabled ? <img src={`${mic}`} className="w-8 h-8" /> : <img src={`${nomic}`} className="w-8 h-8" />}
+								</button>
+								<button onClick={toggleScreenShare} className="flex items-center justify-center text-white rounded-full border-2 border-black w-12 h-12 bg-black mx-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+									{isScreenShareEnabled ? <img src={`${screenShare}`} className="w-8 h-8" /> : <img src={`${screenShare}`} className="w-8 h-8" />}
+								</button>
+								<button
+									onClick={toggleChat}
+									className="flex items-center justify-center text-white rounded-full border-2 border-black w-12 h-12 bg-black mx-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+									>
+									{isChatOpen ? <img src={`${chat}`} className="w-8 h-8" /> : <img src={`${chat}`} className="w-8 h-8" />}
+								</button>
+								<button
+									onClick={toggleItems}
+									className="flex items-center justify-center text-white rounded-full border-2 border-black w-12 h-12 bg-black mx-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+									>
+									{isItemsOpen ? '👜' : '👜'}
+								</button>
+								<button
+									onClick={toggleQuiz}
+									className="flex items-center justify-center text-white rounded-full border-2 border-black w-12 h-12 bg-black mx-2 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+									>
+									{isItemsOpen ? <img src={`${quiz}`} className="w-8 h-8" /> : <img src={`${quiz}`} className="w-8 h-8" />}
+                </button>
+                <button 
+                  onClick={openModal} 
+                  className="flex items-center justify-center text-white rounded-full border-2 border-black w-12 h-12 bg-black mx-2 bg-red-500"
+                >
+                <img src={`${lecture_close}`} className="w-8 h-8" />
+              </button>
+            </div>
+          <div className='col-span-2'></div>
+				</div>
+        </div>
 						)}
 					</div>
 				</div>
@@ -901,111 +887,100 @@ const handleMouseEnter = () => {
 					</div>
 				</div>
 			</div>
-          <div
-              className={`grid gap-4 w-full h-full my-10 ${gridStyles(userCount)} ${isChatOpen || isItemsOpen || isQuizOpen ? 'mr-[320px]' : 'mr-0'} transition-margin duration-500 ease-in-out`}>
-            {users.map((user, index) => {
-              if (user.userRole.endsWith('_screen')) {
-                return null; // Skip rendering if userRole ends with '_screen'
-              }
+			<div className={`grid gap-4 w-full h-full my-10 ${gridStyles(userCount)} ${isChatOpen || isItemsOpen || isQuizOpen ? 'mr-[320px]' : 'mr-0'} transition-margin duration-500 ease-in-out`}>
+			{users.map((user, index) => (
+				<div key={index} className="flex items-center justify-center">
 
-              return (
-                  <div key={index} className="flex items-center justify-center">
-                    <div className="flex flex-col">
-                      <div className="flex-grow">
-                        <div className={`flex flex-col pb-4 ${isFullscreen ? "lg:w-full lg:h-full" : ""}`}>
-                          <WebRTCVideo
-                              email={user.email}
-                              userRole={user.userRole}
-                              stream={user.stream}
-                              videoEnabled={user.videoEnabled}
-                              audioEnabled={user.audioEnabled}
-                              audioDisabledByTeacher={user.audioDisabledByTeacher}
-                              screenShareEnabled={user.screenShareEnabled}
-                              screenShareDisabledByTeacher={user.screenShareDisabledByTeacher}
-                              muted={userRole !== 'TEACHER' && user.userRole !== 'TEACHER'}
-                              isScreenShare={false}
-                          />
-                        </div>
-                        <div className="flex h-4 pt-10">
-                          <div className="w-1/2 flex items-center justify-center text-white">
-                            {userRole === 'TEACHER' && user?.userRole === 'STUDENT' && (
-                                <button onClick={() => toggleStudentMic(user.id, user.audioDisabledByTeacher)}
-                                        className="mt-2">
-                                  {user.audioDisabledByTeacher ? '마이크 허용 시키기' : '마이크 금지 시키기'}
-                                </button>
-                            )}
-                          </div>
-                          <div className="w-1/2 flex items-center justify-center text-white">
-                            {userRole === 'TEACHER' && user?.userRole === 'STUDENT' && (
-                                <button
-                                    onClick={() => toggleStudentScreenShare(user.id, user.email, user.screenShareDisabledByTeacher)}
-                                    className="mt-2">
-                                  {user.screenShareDisabledByTeacher ? '화면공유 허용 시키기' : '화면공유 금지 시키기'}
-                                </button>
-                            )}
-                          </div>
-                        </div>
-                        <div className="h-20 bg-discordChatBg"></div>
-                      </div>
-                    </div>
-                  </div>
-              );
-            })}
-          </div>
+					{user.userRole.endsWith('_screen') ? null : (
+						<div className="flex flex-col">
+							<div className="flex-grow">
+								<div className={`flex flex-col pb-4 ${isFullscreen ? "lg:w-full lg:h-full" : ""}`}>
+									<WebRTCVideo
+										email={user.email}
+										userRole={user.userRole}
+										stream={user.stream}
+										videoEnabled={user.videoEnabled}
+										audioEnabled={user.audioEnabled}
+										audioDisabledByTeacher={user.audioDisabledByTeacher}
+										screenShareEnabled={user.screenShareEnabled}
+										screenShareDisabledByTeacher={user.screenShareDisabledByTeacher}
+										muted={userRole !== 'TEACHER' && user.userRole !== 'TEACHER'}
+										isScreenShare={false}
+									/>
+								</div>
+							<div className="flex h-4 pt-10">
+								<div className="w-1/2 flex items-center justify-center text-white">
+									{userRole === 'TEACHER' && user?.userRole === 'STUDENT' && (
+										<button onClick={() => toggleStudentMic(user.id, user.audioDisabledByTeacher)} className="mt-2">
+											{user.audioDisabledByTeacher ? '마이크 허용 시키기' : '마이크 금지 시키기'}
+										</button>
+									)}
+								</div>
+								<div className="w-1/2 flex items-center justify-center text-white">
+									{userRole === 'TEACHER' && user?.userRole === 'STUDENT' && (
+										<button onClick={() => toggleStudentScreenShare(user.id, user.email, user.screenShareDisabledByTeacher)} className="mt-2">
+											{user.screenShareDisabledByTeacher ? '화면공유 허용 시키기' : '화면공유 금지 시키기'}
+										</button>
+									)}
+								</div>
+                </div>
+                <div className="h-20 bg-discordChatBg"></div>
+							</div>
 
-          <div
-              className={`absolute border-l-2 border-discordChatBg2 top-0 right-0 h-full w-80 p-4 bg-discordChatBg2 text-discordText ${isChatOpen ? 'translate-x-0 transition-transform duration-500 ease-in-out' : 'hidden translate-x-full transition-transform duration-500 ease-in-out'}`}>
-            <h3 className="mt-2 mb-5 text-2xl font-semibold">채팅</h3>
-            <div
-                className="border border-discordChatBg2 p-2 h-[45rem] overflow-y-auto bg-discordChatBg text-discordText">
-              {messages.map((msg, idx) => (
-                  <p key={idx}>{msg}</p>
-              ))}
-            </div>
-            <form onSubmit={handleSendMessage}>
-              <input
-                  type="text"
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="메세지 전송"
-                  className="border-2 my-2 border-discordChatBg2 p-2 w-full bg-discordChatBg text-discordText"
-              />
-              <button
-                  type="submit"
-                  className="mb-2 p-2 bg-discordChatBg text-discordText rounded w-full border-2 border-discordChatBg2"
-              >
-                전송
-              </button>
-            </form>
-          </div>
-          <div
-              className={`absolute border-l-2 border-discordChatBg2 top-0 right-0 h-full w-80 p-4 bg-discordChatBg2 text-discordText ${isItemsOpen ? 'translate-x-0 transition-transform duration-500 ease-in-out' : 'hidden translate-x-full transition-transform duration-500 ease-in-out'}`}>
-            <h3 style={{textAlign: 'center', marginBottom: '10px'}}>학생 화면공유 목록</h3>
-            <div className="border border-discordChatBg2 p-2 h-[45rem] overflow-y-auto bg-discordChatBg text-discordText">
-              {users.filter(user => user.userRole.endsWith('_screen')).map((user, index) => (
-                  <React.Fragment key={index}>
-                    <WebRTCVideo
-                        email={user.email}
-                        userRole={user.userRole}
-                        stream={user.stream}
-                        videoEnabled={user.videoEnabled}
-                        audioEnabled={user.audioEnabled}
-                        audioDisabledByTeacher={user.audioDisabledByTeacher}
-                        screenShareEnabled={user.screenShareEnabled}
-                        screenShareDisabledByTeacher={user.screenShareDisabledByTeacher}
-                        muted={true}
-                        isScreenShare={true}
-                    />
-                    <div style={{ marginBottom: '20px' }}></div>
-                  </React.Fragment>
-              ))}
-            </div>
+						</div>
+)}
+  </div>
+))}
 
-          </div>
+			</div>
+			<div className={`absolute border-l-2 border-discordChatBg2 top-0 right-0 h-full w-80 p-4 bg-discordChatBg2 text-discordText ${isChatOpen ? 'translate-x-0 transition-transform duration-500 ease-in-out' : 'hidden translate-x-full transition-transform duration-500 ease-in-out'}`}>
+			<h3 className="mt-2 mb-5 text-2xl font-semibold">채팅</h3>
+        <div className="border border-discordChatBg2 p-2 h-[320rem] overflow-y-auto bg-discordChatBg text-discordText">
+          {messages.map((msg, idx) => (
+            <p key={idx}>{msg}</p>
+          ))}
+        </div>
+        <form onSubmit={handleSendMessage}>
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="메세지 전송"
+            className="border-2 my-2 border-discordChatBg2 p-2 w-full bg-discordChatBg text-discordText"
+          />
+          <button
+            type="submit"
+            className="mb-2 p-2 bg-discordChatBg text-discordText rounded w-full border-2 border-discordChatBg2"
+          >
+            전송
+          </button>
+        </form>
+			</div>
+			<div className={`absolute border-l-2 border-discordChatBg2 top-0 right-0 h-full w-80 p-4 bg-discordChatBg2 text-discordText ${isItemsOpen ? 'translate-x-0 transition-transform duration-500 ease-in-out' : 'hidden translate-x-full transition-transform duration-500 ease-in-out'}`}>
+				<h3>Student Screen</h3>
+				<div className="border border-discordChatBg2 p-2 h-3/4 overflow-y-auto bg-discordChatBg text-discordText">
+				{users.filter(user => user.userRole.endsWith('_screen')).map((user, index) => (
+            <WebRTCVideo
+              key={index}
+              email={user.email}
+              userRole={user.userRole}
+              stream={user.stream}
+              videoEnabled={user.videoEnabled}
+              audioEnabled={user.audioEnabled}
+              audioDisabledByTeacher={user.audioDisabledByTeacher}
+              screenShareEnabled={user.screenShareEnabled}
+              screenShareDisabledByTeacher={user.screenShareDisabledByTeacher}
+              muted={true}
+              isScreenShare={true}
+            />
+          ))}
+				</div>
 
+				</div>
+				
 
-          {isQuizModalOpen && selectedQuiz && (
-              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[100]">
+				{isQuizModalOpen && selectedQuiz && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-[100]">
           <div className="bg-white rounded-lg shadow-lg w-[500px] relative">
             {/* Close Button Overlapping DetailQuiz */}
             <button
@@ -1039,7 +1014,7 @@ const handleMouseEnter = () => {
         }`}
       >
         <h3 className="my-2 text-2xl font-semibold">퀴즈 목록</h3>
-        <div className="border border-discordChatBg2 p-3 h-[45rem] overflow-y-auto bg-discordChatBg text-discordText">
+        <div className="border border-discordChatBg2 p-3 h-5/6 overflow-y-auto bg-discordChatBg text-discordText">
           {/* 퀴즈에 넣을 내용 */}
           {quizzes !== null && quizzes.length > 0 ? (
             <div className="flex flex-col gap-2">

@@ -18,6 +18,7 @@ export const getLectureDetailApi = async (lectureId: number) => {
     lecture_order: response.data.lecture_order,
     lecture_start_time: response.data.lecture_start_time,
     lecture_end_time: response.data.lecture_end_time,
+    is_completed: response.data.is_completed,
   };
 
   return data;
@@ -54,6 +55,7 @@ export const startLecture = async (lectureId: string) => {
   const token = getAuthToken();
   const response = await axios.patch(
     `${BASE_URL}/api/v1/lectures/start/${lectureId}`,
+    {},
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -64,9 +66,15 @@ export const startLecture = async (lectureId: string) => {
 };
 
 // Fetch final lecture details
-export const fetchFinalLectureDetails = async (lectureId: number) => {
+export const fetchFinalLectureDetails = async (lectureId: string) => {
+  const token = getAuthToken();
   const response = await axios.get(
-    `${BASE_URL}/api/v1/lectures/final/${lectureId}`
+    `${BASE_URL}/api/v1/lectures/final/${lectureId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return response.data;
 };

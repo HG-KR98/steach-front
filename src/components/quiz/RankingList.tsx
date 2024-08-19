@@ -71,31 +71,52 @@ const RankingsList: React.FC<RankingsProps> = ({ data }) => {
     const intervalTime = 50; // 프레임 간격 50ms
     const totalSteps = duration / intervalTime; // 총 프레임 수
 
+    let repeatCount1 = 0; // 반복 횟수를 추적하는 변수
+    const maxRepeats1 = 10; // 최대 반복 횟수 설정
+    
     const interval = setInterval(() => {
       setAnimatedScores((prevScores) =>
         prevScores.map((score, index) => {
           if (index >= data.current.length) {
             return score; // 범위를 넘은 경우 기존 점수를 반환
           }
-
+    
           const targetScore = data.current[index].score;
           const difference = targetScore - score;
           let step = Math.ceil(difference / totalSteps); // 각 프레임에서 변화할 양
-
+    
           // step이 너무 작아서 갱신이 안되는 경우를 방지하기 위해 최소값을 설정
           if (Math.abs(step) < 1) {
             step = difference >= 0 ? 1 : -1;
           }
-
+    
           // 마지막 단계에서 정확하게 목표 점수로 맞추기 위한 조건
-          if (Math.abs(difference) < Math.abs(step)) {
+          if (Math.abs(difference) <= Math.abs(step)) {
             return targetScore; // 마지막 단계에서는 정확하게 목표 점수로 맞춤
           }
-
+    
           return score + step;
         })
       );
+    
+      repeatCount1 += 1; // 반복 횟수 증가
+    
+      if (repeatCount1 >= maxRepeats1) {
+        setAnimatedScores((prevScores) =>
+          prevScores.map((score, index) => {
+            if (index >= data.current.length) {
+              return score;
+            }
+            return data.current[index].score; // 마지막 단계에서 모든 값을 targetScore로 설정
+          })
+        );
+        clearInterval(interval); // 최대 반복 횟수에 도달하면 반복 중단
+      }
     }, intervalTime); // 프레임 간격 50ms
+    
+
+    let repeatCount2 = 0; // 반복 횟수를 추적하는 변수
+    const maxRepeats2 = 10; // 최대 반복 횟수 설정
 
     const interval2 = setInterval(() => {
       setAnimatedRanks((prevRanks) =>
@@ -114,13 +135,27 @@ const RankingsList: React.FC<RankingsProps> = ({ data }) => {
           }
 
           // 마지막 단계에서 정확하게 목표 점수로 맞추기 위한 조건
-          if (Math.abs(difference) < Math.abs(step)) {
+          if (Math.abs(difference) <= Math.abs(step)) {
             return targetRank; // 마지막 단계에서는 정확하게 목표 점수로 맞춤
           }
 
           return rank + step;
         })
       );
+
+      repeatCount2 += 1; // 반복 횟수 증가
+    
+      if (repeatCount2 >= maxRepeats2) {
+        setAnimatedScores((prevScores) =>
+          prevScores.map((score, index) => {
+            if (index >= data.current.length) {
+              return score;
+            }
+            return data.current[index].score; // 마지막 단계에서 모든 값을 targetScore로 설정
+          })
+        );
+        clearInterval(interval2); // 최대 반복 횟수에 도달하면 반복 중단
+      }
     }, intervalTime); // 프레임 간격 50ms
 
     const timeoutId = setTimeout(() => {

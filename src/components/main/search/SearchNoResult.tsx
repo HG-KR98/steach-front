@@ -4,7 +4,7 @@ const SearchNoResult: React.FC = () => {
       <div>
         <div>
           <img
-            src="http://steach.ssafy.io:8082/img-upload/display/my/akjccuxzqsimage-removebg-preview (3).png"
+            src="https://steach.ssafy.io/img-upload/display/my/akjccuxzqsimage-removebg-preview (3).png"
             alt="no-image"
           />
         </div>

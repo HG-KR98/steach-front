@@ -122,6 +122,16 @@ const PatchQuiz: React.FC = () => {
           </div>
           <div className="hidden lg:flex space-x-4">
             <button
+              onClick={() => {
+                navigate(
+                  `/teacher/profile/${username}/curricula/${curricula_id}/lecture/${lecture_id}/quiz`
+                );
+              }}
+              className="mt-4 p-3 bg-slate-400 rounded-lg text-xl font-semibold text-white hover:bg-slate-500"
+            >
+              퀴즈 목록
+            </button>
+            <button
               onClick={plusTab}
               className="mt-4 p-3 bg-blue-400 rounded-lg text-xl font-semibold text-white hover:bg-blue-500"
             >

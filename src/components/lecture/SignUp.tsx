@@ -130,26 +130,44 @@ const LectureSignUp: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     await getContents();
+  
     const formDataToSend = {
       ...formData,
       intro: formData.intro,
       information: formData.information,
       weekdays_bitmask: formatBitmask(formData.weekdays_bitmask),
     };
+  
     try {
       const Postcurricula = await dispatch(SignUpLecture(formDataToSend));
-      const curriculaData = Postcurricula.payload as Curricula;
-      if (curriculaData?.curriculum_id !== undefined) {
-        navigate(`/curricula/detail/${curriculaData?.curriculum_id}`)
-        toast.success("수정되었습니다!", {
+      let curriculaData = Postcurricula.payload as Curricula;
+  
+      const waitForCurriculumId = () => {
+        return new Promise<string | undefined>((resolve, reject) => {
+          const interval = setInterval(() => {
+            if (curriculaData?.curriculum_id !== undefined) {
+              clearInterval(interval);
+              resolve(curriculaData.curriculum_id);
+            }
+          }, 100); // 100ms 간격으로 체크
+  
+          setTimeout(() => {
+            clearInterval(interval);
+            reject(new Error("Timeout waiting for curriculum_id"));
+          }, 10000); // 최대 10초 동안 기다림
+        });
+      };
+  
+      const curriculumId = curriculaData?.curriculum_id !== undefined
+        ? curriculaData.curriculum_id
+        : await waitForCurriculumId();
+  
+      if (curriculumId !== undefined) {
+        navigate(`/curricula/detail/${curriculumId}`);
+        toast.success("등록 되었습니다!", {
           position: "top-right",
         });
-      } else {
-        navigate('/home')
-        toast.success("수정되었습니다!", {
-          position: "top-right",
-        });
-      }
+      } 
     } catch (error) {
       toast.error("에러 발생!", {
         position: "top-right",
@@ -219,14 +237,15 @@ const LectureSignUp: React.FC = () => {
                 onChange={handleChange}
                 className="border-2 rounded-lg w-1/3 p-2 mt-3"
               >
-                <option value="1">KOREAN</option>
-                <option value="2">MATH</option>
-                <option value="3">FOREIGN_LANGUAGE</option>
-                <option value="4">SCIENCE</option>
-                <option value="5">ENGINEERING</option>
-                <option value="6">ARTS_AND_PHYSICAL</option>
-                <option value="7">EDUCATION</option>
-                <option value="8">ETC</option>
+                <option value="KOREAN">KOREAN</option>
+                <option value="MATH">MATH</option>
+                <option value="FOREIGN_LANGUAGE">FOREIGN_LANGUAGE</option>
+                <option value="SCIENCE">SCIENCE</option>
+                <option value="SOCIAL">SOCIAL</option>
+                <option value="ENGINEERING">ENGINEERING</option>
+                <option value="ARTS_AND_PHYSICAL">ARTS_AND_PHYSICAL</option>
+                <option value="EDUCATION">EDUCATION</option>
+                <option value="ETC">ETC</option>
               </select>
               <FormLabel htmlFor="sub_category" className="mt-3 mx-3 text-lg">
                 커리큘럼 중분류

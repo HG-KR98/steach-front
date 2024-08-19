@@ -113,7 +113,8 @@ const TeacherMyLectureListButton: React.FC<TeacherMyLectureListButtonProps> = ({
             className="mx-auto p-3 bg-sky-300 rounded-md shadow text-white font-semibold hover:bg-pink-400"
             onClick={() => {
               navigate(`/classroom/${lectureId}`);
-              window.location.replace(window.location.href);
+              history.replaceState(null, '', window.location.href);
+              window.location.reload();
             }}
           >
             강의실 입장하기

@@ -13,6 +13,7 @@ import {
   patchLectureDetailApi,
   startLecture,
   reportLecture,
+  fetchFinalLectureDetails,
 } from "../api/lecture/lectureAPI";
 import axios from "axios";
 
@@ -81,7 +82,7 @@ export const patchLectureDetail = createAsyncThunk<Lecture, PatchLecture>(
 );
 
 // 강의 시작하기
-export const startLectureSlice = createAsyncThunk<Lecture, string>(
+export const startLectureSlice = createAsyncThunk(
     "lectures/start",
     async (lectureId: string, thunkAPI) => {
       try {
@@ -104,6 +105,23 @@ export const reportLectureSlice = createAsyncThunk<LectureReport, string>(
     async (lectureId: string, thunkAPI) => {
       try {
         const data = await reportLecture(lectureId);
+  
+        return data;
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          return thunkAPI.rejectWithValue(error.response.data);
+        }
+        return thunkAPI.rejectWithValue(error);
+      }
+    }
+);
+  
+// 강의 수업 종료 전송(강사전용)
+export const finalLectureSlice = createAsyncThunk<LectureReport, string>(
+    "lectures/final",
+    async (lectureId: string, thunkAPI) => {
+      try {
+        const data = await fetchFinalLectureDetails(lectureId);
   
         return data;
       } catch (error) {
@@ -180,6 +198,21 @@ const lecturesSlice = createSlice({
         }
       )
       .addCase(reportLectureSlice.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message || "Failed to fetch lectures";
+      })
+      // 강의 종료 final addCase
+      .addCase(finalLectureSlice.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(
+        finalLectureSlice.fulfilled,
+        (state, action) => {
+          state.status = "succeeded";
+          state.lectureReport = action.payload;
+        }
+      )
+      .addCase(finalLectureSlice.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message || "Failed to fetch lectures";
       });

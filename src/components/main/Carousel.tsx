@@ -1,14 +1,18 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
+import teacher1 from "../../assets/cimg/hgteacher.png"
+import teacher2 from "../../assets/cimg/hlteacher.png"
+import teacher3 from "../../assets/cimg/hkteacher.png"
+import teacher4 from "../../assets/cimg/jsteacher.png"
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const imageUrls = [
-  "https://steach.ssafy.io/img-upload/display/my/ttmdhvxbgb무제-3.png",
-  "https://steach.ssafy.io/img-upload/display/my/gdqhhamtsh무제-2.png",
-  "https://steach.ssafy.io/img-upload/display/my/iidswopebx무제-1.png",
-  "https://steach.ssafy.io/img-upload/display/my/rlyahgomzo무제-4.png",
+  teacher1,
+  teacher2,
+  teacher3,
+  teacher4,
 ];
 
 const generateSlides = (urls: string[]) => {

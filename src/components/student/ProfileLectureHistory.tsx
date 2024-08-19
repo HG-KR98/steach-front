@@ -52,13 +52,13 @@ const ProfileLectureHistory: React.FC = () => {
 
   return (
     <>
-      {!isLoading && lectureHistory && (
+      {!isLoading && !lectureHistory && (
         <div className="flex justify-center">
           <img className="size-3/5" src={noHistoryImg} alt="no-img" />
         </div>
       )}
       {isLoading && !lectureHistory && <p>Loading...</p>}
-      {isLoading && lectureHistory && (
+      {!isLoading && lectureHistory && (
         <div className="mx-8 my-10 min-h-screen">
           <h1 className="my-4 text-4xl text-lightNavy font-bold">
             지난 강의 내역이에요!

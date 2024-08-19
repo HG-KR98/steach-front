@@ -119,7 +119,7 @@ const LatestLectures: React.FC = () => {
                               className="w-60 h-40"
                             />
                             <Stack mt="6" spacing="3" className="p-2">
-                              <Heading className="font-bold text-2xl overflow-hidden whitespace-nowrap text-overflow-ellipsis">
+                              <Heading className="font-bold text-2xl overflow-hidden whitespace-nowrap text-overflow-ellipsis truncate">
                                 {curriculum.title}
                               </Heading>
                               <Text

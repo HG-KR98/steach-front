@@ -81,7 +81,17 @@ const FetchQuiz: React.FC = () => {
               </div>
               <div className="hidden lg:flex space-x-4">
                 <button
-                  className="mt-3 p-3 h-14 bg-blue-400 rounded-lg text-xl text-white font-semibold hover:bg-blue-600"
+                  onClick={() => {
+                    navigate(
+                      `/teacher/profile/${username}/curricula/${curricula_id}`
+                    );
+                  }}
+                  className="mt-3 p-3 bg-slate-400 rounded-lg text-xl font-semibold text-white hover:bg-slate-500"
+                >
+                  강의 목록
+                </button>
+                <button
+                  className="mt-3 p-3 bg-blue-400 rounded-lg text-xl text-white font-semibold hover:bg-blue-600"
                   onClick={() =>
                     navigate(
                       `/teacher/profile/${username}/curricula/${curricula_id}/lecture/${lecture_id}/updateQuiz`

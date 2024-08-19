@@ -7,6 +7,11 @@ const Container = styled.div`
 	width: 600px;
 	height: 338px;
 	margin: 5px;
+
+		@media (max-width: 768px) {
+		width: 200px;
+		height: 113px;
+	}
 `;
 
 const VideoContainer = styled.video`
@@ -14,6 +19,11 @@ const VideoContainer = styled.video`
   height: 338px;
   background-color: black;
   border-radius: 16px;
+
+		@media (max-width: 768px) {
+		width: 200px;
+		height: 113px;
+	}
 `;
 
 const ScreenContainer = styled.div`
@@ -94,25 +104,28 @@ const WebRTCVideo = ({ email, userRole, stream, videoEnabled, audioEnabled, audi
 	if(isScreenShare){
 		return (
 			<ScreenContainer>
-				<p>email : {email.substring(0, email.length-7)}의 화면공유</p>
+				<p> {email.substring(0, email.length-7)} {userRole.toUpperCase().includes('student'.toUpperCase()) ? '학생' : '선생님'}의 화면공유</p>
 				<ScreenVideoContainer ref={ref} muted={muted} autoPlay onClick={toggleFullscreen} />
 				{/* <UserLabel>{email}</UserLabel> */}
 			</ScreenContainer>
 		);
 	}else{
-		return (
-			<Container>
-				<VideoContainer ref={ref} muted={muted} autoPlay onClick={toggleFullscreen}/>
-				<UserLabel className='text-white'>{email}</UserLabel>
-				{/* <UserRoleLabel>{userRole}</UserRoleLabel>
-				<Indicator>Video: {videoEnabled ? 'On' : 'Off'}</Indicator>
-				<Indicator>Audio: {audioEnabled && !audioDisabledByTeacher ? 'On' : 'Off'}</Indicator>
-				<Indicator>Teacher Allowed: {audioDisabledByTeacher ? 'No' : 'Yes'}</Indicator>
-				<Indicator>화면공유 상태: {screenShareEnabled ? 'On' : 'Off'}</Indicator>
-				<Indicator>화면공유 권한: {screenShareDisabledByTeacher ? 'No' : 'Yes'}</Indicator> */}
-			</Container>
-		);
-
+		if(userRole.endsWith('_screen')){
+			return (
+				<Container>
+					<UserLabel className='text-white'>{email.substring(0, email.length-7)} {userRole.toUpperCase() === 'student'.toUpperCase() ? '학생' : '선생님'}의 화면공유</UserLabel>
+					<VideoContainer ref={ref} muted={muted} autoPlay onClick={toggleFullscreen}/>
+				</Container>
+			);
+		}else {
+			return (
+				<Container>
+					<UserLabel
+						className='text-white'>{email} {userRole.toUpperCase() === 'student'.toUpperCase() ? '학생' : '선생님'}</UserLabel>
+					<VideoContainer ref={ref} muted={muted} autoPlay onClick={toggleFullscreen}/>
+				</Container>
+			);
+		}
 	}
 };
 

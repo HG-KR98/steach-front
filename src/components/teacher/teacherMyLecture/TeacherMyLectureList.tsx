@@ -134,7 +134,7 @@ const TeacherMyLectureList: React.FC = () => {
                             lecture.lecture_start_time.slice(0, 10)
                           );
                           return (
-                            <div
+<div
                               key={index2}
                               className="grid grid-cols-4 border-b-2 border-gray-400 pt-1"
                             >
@@ -143,9 +143,9 @@ const TeacherMyLectureList: React.FC = () => {
                                   {lecture.lecture_title}
                                 </h2>
                                 <p>
-                                  {daysAgo > 0
+                                  {daysAgo > 0 || lecture.is_completed
                                     ? `종료된 강의입니다.`
-                                    : daysAgo < 0
+                                    : daysAgo < 0 && !lecture.is_completed
                                     ? `${-daysAgo}일 후 강의가 있습니다.`
                                     : "오늘 강의입니다."}
                                 </p>
@@ -169,7 +169,7 @@ const TeacherMyLectureList: React.FC = () => {
                                 </main>
                               </div>
                               <div className="flex justify-center items-center col-span-1">
-                                {daysAgo > 0 && lecture.is_completed ? (
+                                {daysAgo > 0 || lecture.is_completed ? (
                                   <TeacherMyLectureListButton
                                     lectureState={"completed"}
                                     lectureId={lecture.lecture_id}

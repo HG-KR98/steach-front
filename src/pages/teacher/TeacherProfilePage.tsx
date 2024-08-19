@@ -63,7 +63,7 @@ const TeacherProfilePage: React.FC = () => {
               <h2 className="whitespace-nowrap">내 정보</h2>
             </button>
             <button
-              onClick={() => navigate("/lecture/signup")}
+              onClick={() => window.location.replace("/lecture/signup")}
               className="my-2 text-lg p-3 bg-red-200 rounded-md shadow-md text-white hover:bg-red-300 flex flex-col items-center whitespace-nowrap"
             >
               커리큘럼 생성

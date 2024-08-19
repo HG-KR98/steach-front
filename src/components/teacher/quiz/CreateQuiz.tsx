@@ -122,6 +122,16 @@ const CreateQuiz: React.FC = () => {
             ))}
             <div className="lg:flex ml-auto mr-0 my-auto">
               <button
+                onClick={() => {
+                  navigate(
+                    `/teacher/profile/${username}/curricula/${curricula_id}`
+                  );
+                }}
+                className="mt-4 p-3 bg-slate-400 rounded-lg text-xl font-semibold text-white hover:bg-slate-500"
+              >
+                강의 목록
+              </button>
+              <button
                 onClick={plusTab}
                 className="mx-3 mt-4 p-3 bg-blue-400 rounded-lg text-xl font-semibold text-white hover:bg-blue-500"
               >
