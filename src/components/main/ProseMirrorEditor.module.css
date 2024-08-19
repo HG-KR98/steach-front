@@ -1,0 +1,21 @@
+/* ProseMirrorEditor.module.css */
+.editorContainer {
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 100%;
+  height: 600px;
+  box-sizing: border-box;
+  overflow-y: auto; /* 세로 스크롤을 허용 */
+  display: flex;
+  flex-direction: column;
+}
+
+.ProseMirror {
+  height: 100%; /* 부모 컨테이너의 전체 높이를 차지하도록 설정 */
+  flex-grow: 1; /* 남은 공간을 차지 */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 10px;
+}

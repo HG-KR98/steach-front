@@ -1,18 +1,23 @@
-import './Footer.css';
+// Footer.tsx
+import React from "react";
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
-    <footer className="footer">
-      <div className="footer-content">
-        <p>&copy; 2024 MyWebsite. All Rights Reserved.</p>
-        <ul className="footer-links">
-          <li><a href="/about">About</a></li>
-          <li><a href="/contact">Contact</a></li>
-          <li><a href="/privacy">Privacy Policy</a></li>
-        </ul>
-      </div>
+    <footer className="mt-auto h-30 py-2.5 bg-[#282c34] text-white  w-full">
+      <section className="ml-5 my-3">
+        <section className="flex items-center">
+          <div className="my-2 text-3xl font-semibold">(주) STEACH</div>
+          <div className="pl-2 font-semibold">| 개인정보처리방침</div>
+          <div className="pl-2 font-semibold">| 이용약관</div>
+        </section>
+        <div className="my-3 text-sm">
+          (39388) 경상북도 구미시 3공단3로 302 싸피 구미캠퍼스
+        </div>
+        <div className="my-2 text-sm">
+          {"대표자: 조시현 | 대표전화 : 1577-1234  | 사업자번호 : 112-12-11212"}
+        </div>
+      </section>
     </footer>
   );
-}
-
+};
 export default Footer;

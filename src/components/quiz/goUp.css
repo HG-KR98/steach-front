@@ -1,0 +1,25 @@
+@keyframes floatUp {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-50px);
+      opacity: 1;
+    }
+    75% {
+      transform: translateY(-50px);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-100px);
+      opacity: 0;
+    }
+  }
+  
+  .emoji {
+    font-size: 2rem;
+    position: absolute;
+    bottom: 0;
+    animation: floatUp 4s forwards; /* 전체 애니메이션 시간을 4초로 설정 */
+  }

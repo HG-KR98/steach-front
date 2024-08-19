@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "lineseed";
+  src: url("https://cdn.jsdelivr.net/gh/wizfile/font/LINESeedKR-Rg.woff") format("woff");
+  font-style: normal;
+}
+
 body {
-    @apply font-dongle;
+  @apply font-lineseed;
 }
